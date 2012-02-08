@@ -1,0 +1,1 @@
+Widget built in Ruby using Sinatra and Datamapper. Left column categories can have sub-categories, and can be added and to and subtracted from list in right column. Persists to the database and reloads same user. 

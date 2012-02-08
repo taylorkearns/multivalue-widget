@@ -1,0 +1,22 @@
+<div class="form-wrapper">
+	<form action="/" method="post" name="skills-recorder" id="skills-recorder">
+		<fieldset>
+			<h2>Name</h2>
+			
+			<div class="field">
+				<label for="first-name">First Name:</label>
+				<input name="first-name" value="<%= @user[:first_name] %>"/>
+			</div>
+			
+			<div class="field">
+				<label for="last-name">Last Name:</label>
+				<input name="last-name" value="<%= @user[:last_name] %>"/>
+			</div>
+		</fieldset>
+		<fieldset>
+			<h2>Skills</h2>
+			
+			<%= @skills %>
+		</fieldset>
+	</form>
+</div>
