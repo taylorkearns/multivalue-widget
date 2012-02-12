@@ -101,7 +101,8 @@ end
 # Datamapper setup
 # ==================================================
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, 'sqlite:///Users/tkearns/_projects/TK/ruby/multivalue-widget/multivalue-widget/multivalue_widget.db')
+DataMapper.setup(:default, 'sqlite:///Users/taykearns/Documents/Web/_projects/ruby/multivalue-widget/multivalue-widget/multivalue_widget.db')
+#DataMapper.setup(:default, 'sqlite:///Users/tkearns/_projects/TK/ruby/multivalue-widget/multivalue-widget/multivalue_widget.db')
 DataMapper.finalize
 DataMapper.auto_migrate!
 #DataMapper.auto_upgrade!
@@ -143,6 +144,8 @@ p @s16
 p @s17
 
 @u.skills << @s2
+@u.skills << @s3
+@u.skills << @s17
 @u.save
 
 @u.skills.each { |user_skill| puts "USER SKILL >> #{ user_skill[:name] }" }
