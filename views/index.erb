@@ -1,5 +1,5 @@
 <div class="form-wrapper">
-	<form action="/" method="post" name="skills-recorder" id="skills-recorder">
+	<form action="/user" method="post" name="skills-recorder" id="skills-recorder">
 		<fieldset>
 			<h2>Name</h2>
 			
@@ -23,9 +23,19 @@
 				</div>
 				
 				<div class="column two">
-					
+					<% if @user_skills.count >= 1 %>
+						<ul id="user-skills">
+						<% @user_skills.each do |user_skill| %>
+							<li<% if user_skill[:parent_id] %> data-parent="skill-<%= user_skill[:parent_id] %>"<% end %>><%= user_skill[:name] %>
+								<img class="remove" src="images/remove.png"/>
+								<input type="hidden" name="skill[]" value="<%= user_skill[:id] %>"/>
+							</li>
+						<% end %>
+						</ul>
+					<% end %>
 				</div>
 			</div
 		</fieldset>
+		<input type="submit" value="Save Changes"/>
 	</form>
 </div>
