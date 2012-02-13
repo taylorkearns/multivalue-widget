@@ -16,12 +16,17 @@ get '/' do
 end
 
 post '/user' do
-	puts '>>> PARAMS <<<'
-	params[:skill].each { |s| puts s }
-		
 	@user = User.first
 	@user[:first_name] = params['first-name']
 	@user[:last_name] = params['last-name']
+	@user_skill_ids = params['skill'] 
+	puts "params"
+	p params
+	if @user_skill_ids && @user_skill_ids.count > 0
+		@user_skill_ids.each do |id|
+			@user.skills << Skill.get(id.to_i)
+		end
+	end
 	@user.save
 	
 	redirect to('/')
@@ -76,7 +81,7 @@ class TreeBuilder
 				else
 					child_html += '<img class="add" src="images/add.png"/>'
 				end
-				
+# 				child_html += '<input type="hidden" name="skill[]" value="' + child[:id].to_s + '"/>'
 				child_html += '</li>'
 			end
 		end
@@ -92,14 +97,13 @@ class TreeBuilder
 		skills.each do |skill|
 			if skill[:parent_id] === nil
 				html += '<li id="skill-' + skill[:id].to_s + '">' + skill[:name]
-				
 				if children?(skill[:id])
 					html += '<img class="open arrow" src="images/open.png"/>'
 					html += build_children(skill, user_skills)
 				else
 					html += '<img class="add" src="images/add.png"/>'
 				end
-				
+# 				html += '<input type="hidden" name="skill[]" value="' + skill[:id].to_s + '"/>'
 				html += '</li>'
 			end
 		end
@@ -138,43 +142,38 @@ DataMapper.auto_migrate!
 # TEST DATA
 # ==================================================
 @u = User.create(:first_name => 'Taylor', :last_name => 'Kearns')
-p @u
+#p @u
 
 @s1 = Skill.create(:name => 'Programming')
-p @s1
+#p @s1
 @s2 = Skill.create(:name => 'Ruby', :parent_id => 1)
-p @s2
+#p @s2
 @s3 = Skill.create(:name => 'Javascript', :parent_id => 1)
-p @s3
+#p @s3
 @s4 = Skill.create(:name => 'Python', :parent_id => 1)
-p @s4
+#p @s4
 @s11 = Skill.create(:name => 'Exercise')
-p @s11
+#p @s11
 @s12 = Skill.create(:name => 'Weight Lifting', :parent_id => 5)
-p @s12
+#p @s12
 @s121 = Skill.create(:name => 'Squats', :parent_id => 6)
-p @s121
+#p @s121
 @s122 = Skill.create(:name => 'Dead Lifts', :parent_id => 6)
-p @s122
+#p @s122
 @s123 = Skill.create(:name => 'Bench Press', :parent_id => 6)
-p @s123
+#p @s123
 @s13 = Skill.create(:name => 'Cardio', :parent_id => 5)
-p @s13
+#p @s13
 @s14 = Skill.create(:name => 'Agility', :parent_id => 5)
-p @s14
+#p @s14
 @s15 = Skill.create(:name => 'Pottery')
-p @s15
+#p @s15
 @s16 = Skill.create(:name => 'Crochet')
-p @s16
+#p @s16
 @s17 = Skill.create(:name => 'Telepathy')
-p @s17
+#p @s17
 
-@u.skills << @s2
-@u.skills << @s3
-@u.skills << @s17
-@u.save
-
-@u.skills.each { |user_skill| puts "USER SKILL >> #{ user_skill[:name] }" }
+#@u.skills.each { |user_skill| puts "USER SKILL >> #{ user_skill[:name] }" }
 
 
 
