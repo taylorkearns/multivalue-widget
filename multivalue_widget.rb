@@ -6,7 +6,7 @@ require 'data_mapper'
 # ==================================================
 get '/' do
 	@user = User.first
-	@user_skills = @user.all_skills
+	@user_skills = @user.skills.all(:order => [:name])
 	skills_filter = SkillsFilter.new
 	@skills = skills_filter.unassigned_skills(@user_skills)
 	tree_builder = TreeBuilder.new
@@ -19,16 +19,13 @@ post '/user' do
 	@user = User.first
 	@user[:first_name] = params['first-name']
 	@user[:last_name] = params['last-name']
-	@user_skill_ids = params['skill'] 
-	puts "params"
-	p params
-	if @user_skill_ids && @user_skill_ids.count > 0
-		@user_skill_ids.each do |id|
+	@user.skills = []
+	if params['skill'] && params['skill'].count > 0
+		params['skill'].each do |id|
 			@user.skills << Skill.get(id.to_i)
 		end
 	end
 	@user.save
-	
 	redirect to('/')
 end
 
@@ -53,10 +50,6 @@ class User
 	property :first_name, String, :required => true
 	
 	has n, :skills, :through => Resource
-	
-	def all_skills
-		skills.all(:order => [:name])
-	end
 end
 
 # ==================================================
@@ -81,7 +74,6 @@ class TreeBuilder
 				else
 					child_html += '<img class="add" src="images/add.png"/>'
 				end
-# 				child_html += '<input type="hidden" name="skill[]" value="' + child[:id].to_s + '"/>'
 				child_html += '</li>'
 			end
 		end
@@ -103,7 +95,6 @@ class TreeBuilder
 				else
 					html += '<img class="add" src="images/add.png"/>'
 				end
-# 				html += '<input type="hidden" name="skill[]" value="' + skill[:id].to_s + '"/>'
 				html += '</li>'
 			end
 		end

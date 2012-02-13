@@ -26,9 +26,9 @@
 					<ul id="user-skills">
 						<% if @user_skills.count > 0 %>
 							<% @user_skills.each do |user_skill| %>
-								<li<% if user_skill[:parent_id] %> data-parent="skill-<%= user_skill[:parent_id] %>"<% end %>><%= user_skill[:name] %>
+								<li id="skill-<%= user_skill[:id] %>"<% if user_skill[:parent_id] %> data-parent="skill-<%= user_skill[:parent_id] %>"<% end %>><%= user_skill[:name] %>
 									<img class="remove" src="images/remove.png"/>
-<!--  									<input type="hidden" name="skill[]" value="<%= user_skill[:id].to_s %>"/> -->
+  									<input type="hidden" name="skill[]" value="<%= user_skill[:id].to_s %>"/>
 								</li>
 							<% end %>
 						<% end %>
